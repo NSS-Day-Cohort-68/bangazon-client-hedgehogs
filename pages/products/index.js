@@ -5,31 +5,55 @@ import Navbar from '../../components/navbar'
 import { ProductCard } from '../../components/product/card'
 import { getProducts } from '../../data/products'
 
-export default function Products() {
-  const [products, setProducts] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [loadingMessage, setLoadingMessage] = useState("Loading products...")
-  const [locations, setLocations] = useState([])
 
-  useEffect(() => {
-    getProducts().then(data => {
-      if (data) {
+export async function getServerSideProps() {
+  const res = await fetch("http://localhost:8000/products")
+  const data = await res.json()
+  if (data) {
 
-        const locationData = [...new Set(data.map(product => product.location))]
-        const locationObjects = locationData.map(location => ({
-          id: location,
-          name: location
-        }))
-
-        setProducts(data)
-        setIsLoading(false)
-        setLocations(locationObjects)
+      const locationData = [...new Set(data.map(product => product.location))]
+      const locationObjects = locationData.map(location => ({
+        id: location,
+        name: location
+      }))
+      return {
+        props: {
+          x: data,
+          locations: locationObjects
+        }
       }
-    })
-    .catch(err => {
-      setLoadingMessage(`Unable to retrieve products. Status code ${err.message} on response.`)
-    })
-  }, [])
+  }
+}
+
+export default function Products({ x, locations }) {
+  const [products, setProducts] = useState([])
+  // const [isLoading, setIsLoading] = useState(true)
+  // const [loadingMessage, setLoadingMessage] = useState("Loading products...")
+  // const [locations, setLocations] = useState([])
+
+  // useEffect(() => {
+  //   getProducts().then(data => {
+  //     if (data) {
+
+  //       const locationData = [...new Set(data.map(product => product.location))]
+  //       const locationObjects = locationData.map(location => ({
+  //         id: location,
+  //         name: location
+  //       }))
+
+  //       setProducts(data)
+  //       setIsLoading(false)
+  //       setLocations(locationObjects)
+  //     }
+  //   })
+  //   .catch(err => {
+  //     setLoadingMessage(`Unable to retrieve products. Status code ${err.message} on response.`)
+  //   })
+  // }, [])
+
+  useEffect(()=>{
+    setProducts(x)
+  },[])
 
   const searchProducts = (event) => {
     getProducts(event).then(productsData => {
@@ -39,7 +63,7 @@ export default function Products() {
     })
   }
 
-  if (isLoading) return <p>{loadingMessage}</p>
+  // if (isLoading) return <p>{loadingMessage}</p>
 
   return (
     <>
