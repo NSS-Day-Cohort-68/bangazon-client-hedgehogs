@@ -18,15 +18,16 @@ export async function getServerSideProps() {
       }))
       return {
         props: {
-          x: data,
+          products: data,
           locations: locationObjects
         }
       }
   }
 }
 
-export default function Products({ x, locations }) {
-  const [products, setProducts] = useState([])
+export default function Products({ products, locations }) {
+  const [xproducts, setXproducts] = useState([])
+  // const [products, setProducts] = useState([])
   // const [isLoading, setIsLoading] = useState(true)
   // const [loadingMessage, setLoadingMessage] = useState("Loading products...")
   // const [locations, setLocations] = useState([])
@@ -51,29 +52,38 @@ export default function Products({ x, locations }) {
   //   })
   // }, [])
 
-  useEffect(()=>{
-    setProducts(x)
-  },[])
 
   const searchProducts = (event) => {
     getProducts(event).then(productsData => {
       if (productsData) {
-        setProducts(productsData)
+        setXproducts(productsData)
       }
     })
   }
+
+  useEffect(()=>{
+    setXproducts(products)
+  },[])
 
   // if (isLoading) return <p>{loadingMessage}</p>
 
   return (
     <>
-      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} />
+      <Filter productCount={xproducts.length} onSearch={searchProducts} locations={locations} />
 
-      <div className="columns is-multiline">
+      {xproducts != [] ? 
+          <div className="columns is-multiline">
+          {xproducts.map(product => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
+        :
+        <div className="columns is-multiline">
         {products.map(product => (
           <ProductCard product={product} key={product.id} />
         ))}
       </div>
+      }
     </>
   )
 }
