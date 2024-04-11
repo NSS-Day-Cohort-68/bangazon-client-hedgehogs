@@ -66,7 +66,7 @@ export default function Filter({ productCount, onSearch, locations }) {
   }, [])
 
   const buildQuery = (key, value) => {
-    if (value && value !== "0") {
+    if (value !== undefined && value !== "0") {
       return `${key}=${value}&`
     }
     return ""
