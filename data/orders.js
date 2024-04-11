@@ -1,7 +1,7 @@
-import { fetchWithResponse } from "./fetcher";
+import { fetchWithResponse, fetchIgnore404 } from "./fetcher";
 
 export function getCart() {
-  return fetchWithResponse("cart", {
+  return fetchIgnore404("cart", {
     headers: {
       Authorization: `Token ${localStorage.getItem("token")}`,
     },
