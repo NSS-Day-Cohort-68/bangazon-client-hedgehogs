@@ -1,4 +1,4 @@
-import { fetchWithResponse } from "./fetcher";
+import { fetchWithResponse, fetchWithoutResponse } from "./fetcher";
 
 export function getCart() {
   return fetchWithResponse("cart", {
@@ -24,5 +24,14 @@ export function completeCurrentOrder(orderId, payment_type) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ payment_type }),
+  });
+}
+
+export function deleteCart() {
+  return fetchWithoutResponse("cart", {
+    method: "DELETE",
+    headers: {
+      Authorization: `Token ${localStorage.getItem("token")}`,
+    },
   });
 }
