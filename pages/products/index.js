@@ -14,6 +14,7 @@ export default function Products() {
   const [loadingMessage, setLoadingMessage] = useState("Loading products...")
   const [locations, setLocations] = useState([])
   const [categories, setCategories] = useState([])
+  const [filtered, setFiltered] = useState(false)
 
   useEffect(() => {
     getCategories().then(data => {
@@ -45,22 +46,36 @@ export default function Products() {
         setProducts(productsData)
       }
     })
+    setFiltered(true)
   }
 
   if (isLoading) return <p>{loadingMessage}</p>
 
   return (
     <>
-      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} />
-
-      <div className="columns">
-        {categories?.map(category => (
-          <div className="column" key={category.id}>
-            <h3 className="title is-3">{category.name}</h3>
-            <RecentProducts categoryId={category.id} key={category.id} />
+      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} filterView={setFiltered}/>
+      {filtered == false ? 
+            <div className="columns">
+            {categories?.map(category => (
+              <div className="column" key={category.id}>
+                <h3 className="title is-3">{category.name}</h3>
+                <RecentProducts categoryId={category.id} key={category.id} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        :
+        <>
+          <h3 className="title is-3">Products matching filters:</h3>
+          <div className="columns is-multiline">
+            {products.map(product => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+          </div>
+        </>
+      }
+
+
+
     </>
   )
 }
