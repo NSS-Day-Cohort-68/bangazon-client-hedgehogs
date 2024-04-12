@@ -3,15 +3,21 @@ import Filter from '../../components/filter'
 import Layout from '../../components/layout'
 import Navbar from '../../components/navbar'
 import { ProductCard } from '../../components/product/card'
-import { getProducts } from '../../data/products'
+import { getCategories, getProducts } from '../../data/products'
 
 export default function Products() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingMessage, setLoadingMessage] = useState("Loading products...")
   const [locations, setLocations] = useState([])
+  const [categories, setCategories] = useState([])
+
 
   useEffect(() => {
+    getCategories().then(data => {
+      setCategories(data)
+    })
+
     getProducts().then(data => {
       if (data) {
 
@@ -45,11 +51,18 @@ export default function Products() {
     <>
       <Filter productCount={products.length} onSearch={searchProducts} locations={locations} />
 
-      <div className="columns is-multiline">
+      <div className="column is-multiline">
+        {categories.map(category => (
+          <h3 className="title is-3" key={category.id}>{category.name}</h3>
+
+        ))}
+      </div>
+
+      {/* <div className="columns is-multiline">
         {products.map(product => (
           <ProductCard product={product} key={product.id} />
         ))}
-      </div>
+      </div> */}
     </>
   )
 }
