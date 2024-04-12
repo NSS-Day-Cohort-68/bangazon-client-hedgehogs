@@ -6,8 +6,6 @@ import { ProductCard } from '../../components/product/card'
 import { getCategories, getProducts } from '../../data/products'
 import RecentProducts from '../../components/product/recentProductList'
 
-
-
 export default function Products() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -23,7 +21,6 @@ export default function Products() {
 
     getProducts().then(data => {
       if (data) {
-
         const locationData = [...new Set(data.map(product => product.location))]
         const locationObjects = locationData.map(location => ({
           id: location,
@@ -55,13 +52,15 @@ export default function Products() {
     <>
       <Filter productCount={products.length} onSearch={searchProducts} locations={locations} filterView={setFiltered}/>
       {filtered == false ? 
-            <div className="columns">
-            {categories?.map(category => (
-              <div className="column" key={category.id}>
-                <h3 className="title is-3">{category.name}</h3>
-                <RecentProducts categoryId={category.id} key={category.id} />
-              </div>
-            ))}
+          <div className="column">
+          {categories?.map(category => (
+            <div key={category.id}>
+            <h3 className="title is-3">{category.name}</h3>
+            <div className="columns mb-5" key={category.id}>
+              <RecentProducts categoryId={category.id} key={category.id} />
+            </div>
+            </div>
+          ))}
           </div>
         :
         <>
@@ -73,9 +72,6 @@ export default function Products() {
           </div>
         </>
       }
-
-
-
     </>
   )
 }

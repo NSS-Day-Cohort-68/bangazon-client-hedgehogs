@@ -8,11 +8,19 @@ export default function RecentProducts({ categoryId }) {
 
     useEffect(() => {
         getProducts(query).then(data => {
+            if(data) {
             setRecentProducts(data)
-        })
+        }})
     }, [])
 
-    return recentProducts?.map(product => (
-      <ProductCard product={product} key={product.id}/>
-    ))
-} 
+
+    if (recentProducts.length === 0) {
+        return (
+            <div className="ml-4">No products available</div>
+        )
+    } else {
+        return recentProducts.map(product => (
+            <ProductCard product={product} key={product.id}/>
+            ))
+    }
+}       
