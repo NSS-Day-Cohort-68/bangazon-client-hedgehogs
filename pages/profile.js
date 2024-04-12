@@ -32,7 +32,7 @@ export default function Profile() {
         </div>
         <></>
       </CardLayout>
-      <CardLayout title="Recommended Items" width="is-full">
+      <CardLayout title="Products you've recommended" width="is-full">
         <div className="columns is-multiline">
           {profile.recommends?.map((recommendation) => (
             <ProductCard
@@ -44,9 +44,9 @@ export default function Profile() {
         </div>
         <></>
       </CardLayout>
-      {/* <CardLayout title="Products recommended to you" width="is-full">
+      <CardLayout title="Products recommended to you" width="is-full">
         <div className="columns is-multiline">
-          {profile.recommends?.map((recommendation) => (
+          {profile.recommended_by?.map((recommendation) => (
             <ProductCard
               product={recommendation.product}
               key={recommendation.product.id}
@@ -55,7 +55,7 @@ export default function Profile() {
           ))}
         </div>
         <></>
-      </CardLayout> */}
+      </CardLayout>
 
       <CardLayout title="Products you've liked" width="is-full">
         <div className="columns is-multiline">
