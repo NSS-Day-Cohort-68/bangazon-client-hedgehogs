@@ -35,7 +35,10 @@ export default function StoreDetail() {
   }
 
   const favorite = () => {
-    favoriteStore(id).then(refresh)
+    const store = {
+      "store_id": id
+    }
+    favoriteStore(store).then(refresh)
   }
 
   const unfavorite = () => {
