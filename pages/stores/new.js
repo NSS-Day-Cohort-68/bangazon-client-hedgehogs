@@ -7,7 +7,7 @@ import { useAppContext } from '../../context/state'
 import StoreForm from '../../components/store/form'
 
 export default function NewStore() {
-  const { setProfile, profile } = useAppContext()
+  const { profile, setProfile } = useAppContext()
 
   const nameEl = useRef()
   const descriptionEl = useRef()
@@ -22,7 +22,7 @@ export default function NewStore() {
         ...profile,
         store: res
       })
-      router.push(`/stores/${res.id}`)
+      router.push(`/stores`)
     })
   }
 

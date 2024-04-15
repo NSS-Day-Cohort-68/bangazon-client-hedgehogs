@@ -1,21 +1,17 @@
-import Link from 'next/link'
+import Link from "next/link";
 
-export function StoreCard({ store, width= "is-half" }) {
+export function StoreCard({ store, width = "is-half" }) {
   return (
     <div className={`column ${width}`}>
       <div className="card">
         <header className="card-header">
-          <p className="card-header-title">
-            {store.name}
-          </p>
+          <p className="card-header-title">{store.name}</p>
         </header>
         <div className="card-content">
           <p className="content">
-            Owner: {store.seller.first_name} {store.seller.last_name}
+            Owner: {store.seller.user.first_name} {store.seller.user.last_name}
           </p>
-          <div className="content">
-            {store.description}
-          </div>
+          <div className="content">{store.description}</div>
         </div>
         <footer className="card-footer">
           <Link href={`stores/${store.id}`}>
@@ -24,5 +20,5 @@ export function StoreCard({ store, width= "is-half" }) {
         </footer>
       </div>
     </div>
-  )
+  );
 }
