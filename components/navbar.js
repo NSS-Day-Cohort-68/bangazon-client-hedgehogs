@@ -22,6 +22,7 @@ export default function Navbar() {
   };
 
   const getLoggedInButtons = () => {
+    console.log(profile.store);
     return (
       <div className="navbar-item has-dropdown is-hoverable">
         <a className="navbar-link">
@@ -42,10 +43,10 @@ export default function Navbar() {
           <Link href="/profile">
             <a className="navbar-item">Profile</a>
           </Link>
-          
-          {profile.store ? (
+
+          {profile.store && profile.store.length > 0 ? (
             <>
-              <Link href={`/stores/${profile.store.id}`}>
+              <Link href={`/stores/${profile.store[0].id}`}>
                 <a className="navbar-item">View Your Store</a>
               </Link>
               <Link href="/products/new">
