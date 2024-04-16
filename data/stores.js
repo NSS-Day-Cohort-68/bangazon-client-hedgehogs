@@ -49,12 +49,13 @@ export function favoriteStore(store) {
   });
 }
 
-export function unfavoriteStore(storeId) {
-  return fetchWithoutResponse(`stores/${storeId}/unfavorite`, {
+export function unfavoriteStore(store) {
+  return fetchWithoutResponse(`profile/favoritesellers`, {
     method: "DELETE",
     headers: {
       Authorization: `Token ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(store)
   });
 }
