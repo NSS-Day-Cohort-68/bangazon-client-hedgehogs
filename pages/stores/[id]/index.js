@@ -48,12 +48,18 @@ export default function StoreDetail() {
   };
 
   const favorite = () => {
-    favoriteStore(id).then(refresh);
-  };
+    const store = {
+      "store_id": id
+    }
+    favoriteStore(store).then(refresh)
+  }
 
   const unfavorite = () => {
-    unfavoriteStore(id).then(refresh);
-  };
+    const store = {
+      "store_id": id
+    }
+    unfavoriteStore(store).then(refresh)
+  }
 
   return (
       
