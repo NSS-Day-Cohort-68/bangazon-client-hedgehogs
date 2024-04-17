@@ -2,6 +2,9 @@ const API_URL = "http://localhost:8000";
 
 const checkError = (res) => {
   if (!res.ok) {
+    if (res.status === 204) {
+      return
+    }
     throw Error(res.status);
   }
   return res;
@@ -22,7 +25,11 @@ const catchError = (err) => {
   if (err.message === "404") {
     throw Error(err.message);
   }
-};
+  if (err.message === '400') {
+    return; 
+  }
+  throw err;
+}
 
 export const fetchWithResponse = (resource, options) =>
   fetch(`${API_URL}/${resource}`, options)
