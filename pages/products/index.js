@@ -3,18 +3,24 @@ import Filter from '../../components/filter'
 import Layout from '../../components/layout'
 import Navbar from '../../components/navbar'
 import { ProductCard } from '../../components/product/card'
-import { getProducts } from '../../data/products'
+import { getCategories, getProducts } from '../../data/products'
+import RecentProducts from '../../components/product/recentProductList'
 
 export default function Products() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingMessage, setLoadingMessage] = useState("Loading products...")
   const [locations, setLocations] = useState([])
+  const [categories, setCategories] = useState([])
+  const [filtered, setFiltered] = useState(false)
 
   useEffect(() => {
+    getCategories().then(data => {
+      setCategories(data)
+    })
+
     getProducts().then(data => {
       if (data) {
-
         const locationData = [...new Set(data.map(product => product.location))]
         const locationObjects = locationData.map(location => ({
           id: location,
@@ -37,19 +43,35 @@ export default function Products() {
         setProducts(productsData)
       }
     })
+    setFiltered(true)
   }
 
   if (isLoading) return <p>{loadingMessage}</p>
 
   return (
     <>
-      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} />
-
-      <div className="columns is-multiline">
-        {products.map(product => (
-          <ProductCard product={product} key={product.id} />
-        ))}
-      </div>
+      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} filterView={setFiltered}/>
+      {filtered == false ? 
+          <div className="column">
+          {categories?.map(category => (
+            <div key={category.id}>
+            <h3 className="title is-3">{category.name}</h3>
+            <div className="columns mb-5" key={category.id}>
+              <RecentProducts categoryId={category.id} key={category.id} />
+            </div>
+            </div>
+          ))}
+          </div>
+        :
+        <>
+          <h3 className="title is-3">Products matching filters:</h3>
+          <div className="columns is-multiline">
+            {products.map(product => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+          </div>
+        </>
+      }
     </>
   )
 }

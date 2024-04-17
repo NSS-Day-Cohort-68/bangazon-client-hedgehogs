@@ -24,6 +24,7 @@ export default function Login() {
       if (res.token) {
         setToken(res.token)
         router.push('/')
+        
       }
     })
   }
