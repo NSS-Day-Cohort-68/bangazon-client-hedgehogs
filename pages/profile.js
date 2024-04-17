@@ -54,7 +54,7 @@ export default function Profile() {
       <CardLayout title="Products you've liked" width="is-full">
         <div className="columns is-multiline">
           {
-            profile.likes?.map(product => (
+            profile.liked_products?.map(product => (
               <ProductCard product={product} key={product.id} width="is-one-third" />
             ))
           }
