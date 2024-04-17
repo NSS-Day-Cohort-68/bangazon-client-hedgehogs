@@ -31,10 +31,13 @@ export default function StoreDetail() {
     if (id) {
       refresh();
     }
-    if (parseInt(id) === profile.store[0].id) {
+    if (profile.store && profile.store.length > 0 && parseInt(id) === profile.store[0].id) {
       setIsOwner(true);
+    } else {
+      setIsOwner(false);
     }
   }, [id, profile]);
+  
 
   const refresh = () =>
     getStoreById(id).then((storeData) => {

@@ -15,9 +15,10 @@ export function AppWrapper({ children }) {
 
   useEffect(() => {
     const authRoutes = ['/login', '/register']
+    // debugger
     if (token) {
       localStorage.setItem('token', token)
-      if (!authRoutes.includes(router.pathname)) {
+      if (!("id" in profile)) {
         getUserProfile().then((profileData) => {
           if (profileData) {
             setProfile(profileData)

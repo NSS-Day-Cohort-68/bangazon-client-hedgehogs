@@ -4,14 +4,14 @@ import { useAppContext } from "../context/state";
 import { useRouter } from "next/router";
 
 export default function Navbar() {
-  const { token, profile } = useAppContext();
+  const { token, profile, setProfile } = useAppContext();
   const hamburger = useRef();
   const navbar = useRef();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
+    if (token) {  
       setIsLoggedIn(true);
     }
   }, [token]);
@@ -22,7 +22,6 @@ export default function Navbar() {
   };
 
   const getLoggedInButtons = () => {
-    console.log(profile.store);
     return (
       <div className="navbar-item has-dropdown is-hoverable">
         <a className="navbar-link">
@@ -62,6 +61,7 @@ export default function Navbar() {
           <a
             className="navbar-item"
             onClick={() => {
+              setProfile({})
               localStorage.removeItem("token");
               setIsLoggedIn(false);
               router.push(`/login`);
