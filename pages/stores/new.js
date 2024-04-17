@@ -18,10 +18,9 @@ export default function NewStore() {
       name: nameEl.current.value,
       description: descriptionEl.current.value,
     }).then((res) => {
-      console.log(res);
       setProfile({
         ...profile,
-        store: res,
+        store: [res],
       });
       router.push(`/stores/${res.id}`);
     });
