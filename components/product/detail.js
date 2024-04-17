@@ -1,15 +1,18 @@
 import { useRouter } from "next/router"
-import { useState, useRef } from "react"
-import { addProductToOrder, recommendProduct } from "../../data/products"
+import { useState, useEffect, useRef } from "react"
+import { addProductToOrder, recommendProduct, likeProduct, unLikeProduct } from "../../data/products"
 import Modal from "../modal"
 import { Input } from "../form-elements"
+import { useAppContext } from "../../context/state"
+import { getUserProfile } from "../../data/auth"
 
-export function Detail({ product, like, unlike }) {
+export function Detail({ product }) {
+  const { profile, setProfile } = useAppContext()
   const router = useRouter()
   const usernameEl = useRef()
   const [showModal, setShowModal] = useState(false)
   const [showError, setShowError] = useState(false)
-
+  const [ isLiked, setIsLiked] = useState(false)
 
   const addToCart = () => {
     addProductToOrder(product.id).then(() => {
@@ -28,6 +31,35 @@ export function Detail({ product, like, unlike }) {
       }
     })
   }
+
+  const like = () => {
+    likeProduct(product.id).then(() => {
+      setIsLiked(true); 
+    });
+  };
+
+  const unlike = () => {
+    unLikeProduct(product.id).then(() => {
+      setIsLiked(false); 
+    });
+  };
+
+  useEffect(() => {
+    const likedProduct = profile.liked_products?.find(x => x.product.id === product.id);
+    
+    if (likedProduct !== undefined) {
+    setIsLiked(true);  
+    }
+    
+  }, [profile.liked_products, product.id]);
+
+   useEffect(() => {
+    getUserProfile().then((profileData) => {
+      if (profileData) {
+        setProfile(profileData)
+      }
+    })
+  }, [isLiked])
 
   return (
     <>
@@ -70,7 +102,7 @@ export function Detail({ product, like, unlike }) {
               </p>
               <p className="control">
                 {
-                  product.is_liked ?
+                  isLiked ?
                     <button className="button is-link is-outlined" onClick={unlike}>
                       <span className="icon is-small">
                         <i className="fas fa-heart-broken"></i>
