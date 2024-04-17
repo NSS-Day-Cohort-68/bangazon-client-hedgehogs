@@ -15,7 +15,6 @@ export function AppWrapper({ children }) {
 
   useEffect(() => {
     const authRoutes = ['/login', '/register']
-    // debugger
     if (token) {
       localStorage.setItem('token', token)
       if (!("id" in profile)) {
