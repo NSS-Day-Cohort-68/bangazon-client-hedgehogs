@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getCategories } from '../data/products'
 import { Input, Select } from './form-elements'
 
-export default function Filter({ productCount, onSearch, locations }) {
+export default function Filter({ productCount, onSearch, locations, filterView }) {
   const refEls = {
     location: useRef(),
     category: useRef(),
@@ -30,6 +30,7 @@ export default function Filter({ productCount, onSearch, locations }) {
       }
     }
     onSearch('')
+    filterView(false)
   }
   const orderByOptions = [
     {
